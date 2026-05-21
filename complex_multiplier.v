@@ -1,7 +1,7 @@
 
-module cmultiplier(input[15:0] real1,complex1,real2,complex2,
+module cmultiplier(input signed [15:0] real1,complex1,real2,complex2,
                    input clk,rst,
-                   output reg [15:0] real_out,complex_out);
+                   output reg signed [15:0] real_out,complex_out);
                    
                    reg[31:0] r1r2,c1c2,r1c2,r2c1;
                    wire[31:0] sum_real,sum_complex;
