@@ -16,7 +16,7 @@ module dual_port_ram ( clk,
     output reg signed [31:0] data_out_A,data_out_B;
     
     reg signed [31:0] mem [0:N-1]; /*since we have to fetch both the complex and 
-    real numbers we have used 32 bit, 16 bit for complex 16 bit for signed*/
+    real part we have used 32 bit, 16 bit for complex 16 bit for signed*/
     
     always @(posedge clk or negedge rst) begin
         if(!rst) begin
