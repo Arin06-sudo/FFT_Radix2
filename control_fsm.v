@@ -6,7 +6,7 @@ module control_fsm( clk,rst,
                     read_addr_rom,
                     write_enable);
 
-    parameter N = 8;
+    parameter N = 4;
     input clk,rst,start;
     output reg [$clog2(N)-1:0] read_addra ,read_addrb;
     output reg [$clog2(N)-1:0] write_addra,write_addrb;
@@ -36,11 +36,7 @@ module control_fsm( clk,rst,
     wire [$clog2(N)-1:0]read_address_b = read_address_a+stride;    
     wire [$clog2(N/2)-1:0] read_rom = butterfly_counter<<($clog2(N)-stage_counter);
     
-    reg [1:0] wait_counter;
-    
-    reg [$clog2(N)-1:0] d1_a,d2_a;
-    
-    reg [$clog2(N)-1:0] d1_b,d2_b;
+
     
     wire [$clog2(N)-1:0] max_butterfly_count = stride;
     wire [$clog2(N)-1:0] max_group_count = (N/2)>>(stage_counter-1);
@@ -62,52 +58,44 @@ module control_fsm( clk,rst,
             stage_counter<=1;
             group_counter <=0;
             butterfly_counter <=0;
-            wait_counter<=0;
-            
+
         end
 
         else begin 
-            state <= next_state;
-
-        end
-    
-    end
-    
-    always@(*) begin
         
         
-        case(state)
+            case(state)
             IDLE: begin
                 done <=0;
-                if(start) next_state<= READ;
+                write_enable <=0;
+                if(start) state<= READ;
                 
-                else next_state <= IDLE;
+                else state <= IDLE;
             end
             
             READ: begin
-                write_enable <=0;
+                
                 read_addra <= read_address_a;
-                read_addrb <= read_address_b;  
-                next_state <= CALC1;
-                wait_counter <=0; 
+                read_addrb <= read_address_b;               
+                read_addr_rom <= read_rom;  
+                state <= CALC1;
+           
             end
             
-            CALC1 : next_state<= CALC2;
+            CALC1 : state<= CALC2;
             
             CALC2: begin
                 
-                if(wait_counter==1) next_state <= WRITE;    
-                
-                else wait_counter <= wait_counter+1;
-                
+   
                 write_addra <= read_addra;
                 write_addrb <= read_addrb;
+                state <= WRITE;
             
             end
             
             WRITE: begin
                 write_enable <= 1;
-                next_state <= READ;
+                state <= READ;
                 
                 if(butterfly_counter == max_butterfly_count-1) begin
                     butterfly_counter<=0;
@@ -118,7 +106,8 @@ module control_fsm( clk,rst,
                         if(stage_counter == TOTAL_STAGES) begin
                         
                             done <= 1;
-                            next_state <= IDLE;
+                            write_enable <=0;
+                            state <= IDLE;
                         end    
                         else begin
                             stage_counter <= stage_counter+1;
@@ -136,9 +125,11 @@ module control_fsm( clk,rst,
             end
         
         endcase
-        
-         
+
+
+        end
+    
     end
-    
-    
+  
 endmodule
+
