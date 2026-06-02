@@ -3,9 +3,8 @@ module FFT_module_top(input clk,
                       input rst,
                       input start_fft,
                       output fft_done);
-                      
-    
-     parameter N = 8; 
+
+     parameter N = 4; 
        
      wire [$clog2(N)-1:0] read_address_a;
      
@@ -44,7 +43,7 @@ module FFT_module_top(input clk,
                        .data_out(W_out_rom),
                        .rd_en(1'b1));
 
-    dual_port_memory ram_u3(.clk(clk),
+    dual_port_ram ram_u3(.clk(clk),
                             .rst(rst),
                             .addra(we?write_address_a:read_address_a),
                             .addrb(we?write_address_b:read_address_b),
