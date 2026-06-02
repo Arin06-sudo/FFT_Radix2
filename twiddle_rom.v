@@ -3,18 +3,19 @@ module twiddle_rom( addr,
                     data_out,
                     rd_en);
 
-    parameter N=8;
+    parameter N=4;
     
-    output reg signed [15:0] data_out;
+    output reg [31:0] data_out;
     
     input [$clog2(N/2)-1:0] addr;
     
     input rd_en;
     
-    reg [15:0] rom_mem [0:N/2-1];                   
+    reg [31:0] rom_mem [0:N/2-1]; 
     
-    always@(rd_en) begin
+    initial begin
+        rom_mem[0] = 32'h7fff_0000;
+        rom_mem[1] = 32'h0000_8000;
+        
     
-        data_out = rom_mem[addr];   
-                   
-   end
+    end
