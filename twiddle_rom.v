@@ -19,3 +19,13 @@ module twiddle_rom( addr,
         
     
     end
+
+    always@(rd_en or addr) begin
+    
+        data_out = rom_mem[addr];   
+                   
+   end
+
+endmodule
+
+
