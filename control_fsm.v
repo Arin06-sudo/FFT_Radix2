@@ -1,5 +1,4 @@
 
-
 module control_fsm( clk,rst,
                     start,done,
                     read_addra,read_addrb,
@@ -29,9 +28,9 @@ module control_fsm( clk,rst,
     // The maximum number of butterflies in a group is N/2
     reg [$clog2(N/2)-1 : 0] butterfly_counter;
     
-    wire [$clog2(N)-1:0]stride;
+    wire [$clog2(N)-1:0] stride;
     
-    assign stride = 2^(stage_counter-1); 
+    assign stride = 1<<(stage_counter-1); 
     
     wire[$clog2(N)-1:0] read_address_a = group_counter*stride*2+butterfly_counter;
     wire [$clog2(N)-1:0]read_address_b = read_address_a+stride;    
@@ -43,7 +42,7 @@ module control_fsm( clk,rst,
     wire [$clog2(N)-1:0] max_group_count = (N/2)>>(stage_counter-1);
     
     
-    parameter IDLE = 3'b000, READ = 3'b000, CALC1= 3'b010, CALC2 = 3'b011, WRITE = 3'b100;
+    parameter IDLE = 3'b000, READ = 3'b001, CALC1= 3'b010, CALC2 = 3'b011, WRITE = 3'b100;
     
     always@(posedge clk or negedge rst) begin
         
@@ -74,7 +73,7 @@ module control_fsm( clk,rst,
             end
             
             READ: begin
-                
+                write_enable<=0;
                 read_addra <= read_address_a;
                 read_addrb <= read_address_b;               
                 read_addr_rom <= read_rom;  
@@ -106,7 +105,7 @@ module control_fsm( clk,rst,
                         if(stage_counter == TOTAL_STAGES) begin
                         
                             done <= 1;
-                            write_enable <=0;
+                           
                             state <= IDLE;
                         end    
                         else begin
@@ -132,3 +131,4 @@ module control_fsm( clk,rst,
     end
   
 endmodule
+
