@@ -31,6 +31,7 @@ module FFT_module_top(input clk,
     wire signed [31:0] W_out_rom;
     
     wire signed [15:0] sum_out_real;
+    
     wire signed [15:0] sum_out_complex;
     wire signed [15:0] sub_out_real;
     wire signed [15:0] sub_out_complex;
@@ -80,5 +81,5 @@ module FFT_module_top(input clk,
                                  .sumout_real(sum_out_real),.sumout_complex(sum_out_complex),
                                  .subout_real(sub_out_real),.subout_complex(sub_out_complex));
    
-           
+      
 endmodule
