@@ -1,4 +1,5 @@
 
+
 module control_fsm( clk,rst,
                     start,done,
                     read_addra,read_addrb,
@@ -20,7 +21,7 @@ module control_fsm( clk,rst,
     parameter TOTAL_STAGES = $clog2(N);
     
     // The width of the counter needs to hold the number 'TOTAL_STAGES'
-    reg [$clog2(TOTAL_STAGES + 1)-1 : 0] stage_counter;
+    reg [$clog2(TOTAL_STAGES + 1) : 0] stage_counter;
     
     // The maximum number of groups is N/2
     reg [$clog2(N/2)-1 : 0] group_counter;
@@ -63,7 +64,6 @@ module control_fsm( clk,rst,
 
         else begin 
         
-        
             case(state)
             IDLE: begin
                 done <=0;
@@ -82,11 +82,11 @@ module control_fsm( clk,rst,
            
             end
             
-            CALC1 : state<= CALC2;
-            
+            CALC1 : state<= CALC2; /*states required for waiting till the hardware does its job
+            (since cmultiplier is pipelined it takes two clock cycles for the multiplication to be generated*/
+
             CALC2: begin
-                
-   
+
                 write_addra <= read_addra;
                 write_addrb <= read_addrb;
                 state <= WRITE;
@@ -132,4 +132,3 @@ module control_fsm( clk,rst,
     end
   
 endmodule
-
