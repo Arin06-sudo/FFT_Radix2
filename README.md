@@ -85,3 +85,4 @@ The design has been verified using **Xilinx Vivado Simulator (XSim)** alongside 
 5. Add the generated `.mem` files to the project as memory initialization files.
 6. Add `FFT_testbench.v` as a Simulation Source and set it as the top module.
 7. Run **Behavioral Simulation** to observe the FFT computation in the waveform viewer.
+8. Change the parameter values in the python scripts and the verilog code to get the desired number of points in FFT
