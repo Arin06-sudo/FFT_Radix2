@@ -1,5 +1,6 @@
 Radix-2 Decimation-in-Time FFT Processor
 Overview
+
 This repository contains the RTL implementation of a scalable, parameterized Radix-2 Decimation-in-Time Fast Fourier Transform (DIT-FFT) processor. Designed in Verilog and synthesized using Xilinx Vivado, the architecture is tailored for efficient digital signal processing. The design leverages a custom hardware architecture featuring pipelined execution and fixed-point arithmetic to balance high computational throughput with resource efficiency.
 
 Key Features
