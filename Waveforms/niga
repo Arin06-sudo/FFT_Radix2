@@ -1,1 +1,3 @@
 
+1st Waveform shows the conditon at start of the FFT calculation
+2nd Waveform shows the final calculated values of DFT of the given Input
